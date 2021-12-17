@@ -2,98 +2,103 @@ import { useEffect, useState } from 'react';
 import { SilverHunterContract, CastleContract } from '../../utils/contract';
 
 const GameStats = () => {
-    const [knightMinted, setKnightMinted] = useState();
-    const [knightStaked, setKnightStaked] = useState();
-    const [vikingMinted, setVikingMinted] = useState();
-    const [vikingStaked, setVikingStaked] = useState();
-    const [stolenKnights, setStolenKnights] = useState();
-    const [stolenVikings, setStolenVikings] = useState();
+    const [knightMinted, setKnightMinted] = useState(0);
+    const [knightStaked, setKnightStaked] = useState(0);
+    const [vikingMinted, setVikingMinted] = useState(0);
+    const [vikingStaked, setVikingStaked] = useState(0);
+    const [stolenKnights, setStolenKnights] = useState(0);
+    const [stolenVikings, setStolenVikings] = useState(0);
 
     useEffect(() => {
-        // async function init() {
-        //     const tokenMinted = await SilverHunterContract.methods.tokensMinted().call();
-        //     const vMinted = await SilverHunterContract.methods.vikingMinted().call();
-        //     setKnightMinted(tokenMinted - vMinted);
-        //     setVikingMinted(vMinted);
-
-        //     const kStaked = await CastleContract.methods.totalKnightStaked().call();
-        //     setKnightStaked(kStaked);
-        //     const vStaked = await CastleContract.methods.totalVikingStaked().call();
-        //     setVikingStaked(vStaked);
-
-        //     const kStolen = await SilverHunterContract.methods.knightStolen().call();
-        //     setStolenKnights(kStolen);
-        //     const vStolen = await SilverHunterContract.methods.vikingStolen().call();
-        //     setStolenVikings(vStolen);
-        // }
-
-        // init();
-
         let isMounted = true;
 
         SilverHunterContract.methods.tokensMinted().call()
-          .then(tokenMinted => {
-            // if (isMounted) {
-            //   setStakedKnights(stkKnights);
-            // }
-            SilverHunterContract.methods.vikingMinted().call()
-                .then(vMinted => {
-                    if (isMounted) {
-                        setKnightMinted(tokenMinted - vMinted);
-                        setVikingMinted(vMinted);
-                    }
-                })
-          });
-        
+            .then(tokenMinted => {
+                // if (isMounted) {
+                //   setStakedKnights(stkKnights);
+                // }
+                SilverHunterContract.methods.vikingMinted().call()
+                    .then(vMinted => {
+                        if (isMounted) {
+                            setKnightMinted(tokenMinted - vMinted);
+                            setVikingMinted(vMinted);
+                        }
+                    })
+            });
+
         CastleContract.methods.totalKnightStaked().call()
-        .then(kStaked => {
-            if (isMounted) setKnightStaked(kStaked);
-        });
+            .then(kStaked => {
+                if (isMounted) setKnightStaked(kStaked);
+            });
         CastleContract.methods.totalVikingStaked().call()
-        .then(vStaked => {
-            if (isMounted) setVikingStaked(vStaked);
-        });
-        
+            .then(vStaked => {
+                if (isMounted) setVikingStaked(vStaked);
+            });
+
         SilverHunterContract.methods.knightStolen().call()
-        .then(kStolen => {
-            if (isMounted) setStolenKnights(kStolen);
-        });
+            .then(kStolen => {
+                if (isMounted) setStolenKnights(kStolen);
+            });
         SilverHunterContract.methods.vikingStolen().call()
-        .then(vStolen => {
-            if (isMounted) setStolenVikings(vStolen);
-        })
-        
+            .then(vStolen => {
+                if (isMounted) setStolenVikings(vStolen);
+            })
+
         return () => { isMounted = false };
     }, []);
 
     return (
         <div className="shield_wrapper">
             <h2>GAME STATS</h2>
-            <table>
+            <table cellSpacing="0" cellPadding="0">
                 <tbody>
                     <tr>
-                        <td>KNIGHTS MINTED</td>
-                        <td>{knightMinted}</td>
+                        <td>
+                            <b>KNIGHTS MINTED</b>
+                        </td>
+                        <td>
+                            <b>{knightMinted}</b>
+                        </td>
                     </tr>
                     <tr>
-                        <td>KNIGHTS STAKED</td>
-                        <td>{knightStaked}</td>
+                        <td>
+                            <b>KNIGHTS STAKED</b>
+                        </td>
+                        <td>
+                            <b>{knightStaked}</b>
+                        </td>
                     </tr>
                     <tr>
-                        <td>VIKINGS MINTED</td>
-                        <td>{vikingMinted}</td>
+                        <td>
+                            <b>VIKINGS MINTED</b>
+                        </td>
+                        <td>
+                            <b>{vikingMinted}</b>
+                        </td>
                     </tr>
                     <tr>
-                        <td>VIKINGS STAKED</td>
-                        <td>{vikingStaked}</td>
+                        <td>
+                            <b>VIKINGS STAKED</b>
+                        </td>
+                        <td>
+                            <b>{vikingStaked}</b>
+                        </td>
                     </tr>
                     <tr>
-                        <td>STOLEN KNIGHTS</td>
-                        <td>{stolenKnights}</td>
+                        <td>
+                            <b>STOLEN KNIGHTS</b>
+                        </td>
+                        <td>
+                            <b>{stolenKnights}</b>
+                        </td>
                     </tr>
                     <tr>
-                        <td>STOLEN VIKINGS</td>
-                        <td>{stolenVikings}</td>
+                        <td>
+                            <b>STOLEN VIKINGS</b>
+                        </td>
+                        <td>
+                            <b>{stolenVikings}</b>
+                        </td>
                     </tr>
                 </tbody>
             </table>

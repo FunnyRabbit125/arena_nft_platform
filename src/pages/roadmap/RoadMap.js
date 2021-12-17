@@ -24,18 +24,18 @@ function RoadMap(props) {
         {/* roadmap content */}
         <div className="roadmap_content">
           <div className="content_item_1">
-            <h2>LAUNCH</h2>
+            <h2>LAUNCH : Q4 2021</h2>
             <p>First generation Warriors are avaiable to mint and stake</p>
           </div>
           <div className="content_item_2">
-            <h2>ARENA MODE</h2>
+            <h2>ARENA : Q1 2022</h2>
             <p>
               Arena mode in which warriors are able to battle each other and put
               SILVER on the line{" "}
             </p>
           </div>
           <div className="content_item_3">
-            <h2>NEW WARRIORS</h2>
+            <h2>NEW WARRIORS : Q2 2022</h2>
             <p>
               NEW warrior types with different and varying abilities and
               attributes

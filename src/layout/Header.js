@@ -4,30 +4,49 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { setWallet } from '../actions/wallet';
-// import { web3 } from '../utils/contract';
 
-function Header({
-  setWallet
-}) {
-
+function Header({ setWallet }) {
   useEffect(() => {
     async function init() {
       const { address } = await getCurrentWalletConnected();
-      setWallet(address)
+      setWallet(address);
+      addWalletListener();
     }
     init();
   }, []);
 
+  function addWalletListener() {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          setWallet(accounts[0]);
+        } else {
+          setWallet("");
+        }
+      });
+
+      window.ethereum.on("chainChanged", (_chainId) => {
+        if (_chainId != 3) {
+          setWallet("");
+        }
+      });
+    } else {
+      setWallet("");
+    }
+  }
+
   const getCurrentWalletConnected = async () => {
     if (window.ethereum) {
       try {
-        // web3.version.getNetwork((err, netId) => {
-        //   if (netId != 3) {
-        //     return {
-        //       address: ''
-        //     }
-        //   }
-        // });
+        const chainId = await window.ethereum.request({
+          method: "eth_chainId"
+        });
+
+        if (chainId != 3) {
+          return {
+            address: ""
+          }
+        }
 
         const addressArray = await window.ethereum.request({
           method: "eth_accounts",
@@ -55,14 +74,16 @@ function Header({
 
   const connectWallet = async () => {
     if (window.ethereum) {
-      // web3.eth.net.getNetworkType((network) => {
-      //   alert(network);
-      //   if (network !== "ropsten") {
-      //     return {
-      //       address: ''
-      //     }
-      //   }
-      // });
+      const chainId = await window.ethereum.request({
+        method: "eth_chainId"
+      });
+
+      if (chainId != 3) {
+        alert("Please switch to Ropsten test network!");
+        return {
+          address: ""
+        }
+      }
 
       try {
         const addressArray = await window.ethereum.request({
@@ -127,16 +148,12 @@ function Header({
           </a>
         </div>
         <div className="right_box">
-          {/* {useLocation().pathname === "/" ? (
-            ""
-          ) : (
-              <Link className="anchor_bg" to="/">
-                HOME
-              </Link>
-            )} */}
-
-          {useLocation().pathname === "/" ? (
-            <Link className="anchor_bg" to="/" onClick={connectWalletPressed}>
+          {useLocation().pathname == "/" ? (
+            <Link
+              className="anchor_bg anchor_login btn_animate"
+              to="/"
+              onClick={connectWalletPressed}
+            >
               CONNECT WALLET
             </Link>
           ) : (
@@ -144,19 +161,54 @@ function Header({
             )}
 
           {useLocation().pathname === "/whitepaper" ? (
-            <Link className="anchor_bg" to="/roadmap">
+            <Link className="anchor_bg btn_animate" to="/">
+              HOME
+            </Link>
+          ) : (
+              ""
+            )}
+
+          {useLocation().pathname == "/roadmap" ? (
+            <Link className="anchor_bg btn_animate" to="/">
+              HOME
+            </Link>
+          ) : (
+              ""
+            )}
+
+          {useLocation().pathname == "/whitepaper" ? (
+            <Link className="anchor_bg btn_animate" to="/roadmap">
               ROADMAP
             </Link>
           ) : (
-              <Link className="anchor_bg" to="/whitepaper">
+              <Link className="anchor_bg btn_animate" to="/whitepaper">
                 WHITEPAPER
             </Link>
+            )}
+
+          {useLocation().pathname == "/" ? (
+            <Link className="anchor_bg btn_animate" to="/roadmap">
+              ROADMAP
+            </Link>
+          ) : (
+              ""
+            )}
+
+          {useLocation().pathname == "/log_in_page" ? (
+            <Link className="anchor_bg btn_animate" to="/roadmap">
+              ROADMAP
+            </Link>
+          ) : (
+              ""
             )}
         </div>
       </div>
 
       <div className="logo_wrapper">
-        <img src={require("../assets/img/logo.png").default} alt="logo" />
+        <img
+          src={require("../assets/img/area_royale_logo.png").default}
+          alt="logo"
+        />
       </div>
     </header>
   );

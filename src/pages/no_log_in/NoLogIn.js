@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import GameStats from '../gameStats/GameStats';
@@ -23,7 +23,7 @@ function NoLogIn({ walletAddress }) {
           src={require("../../assets/img/diamond_1.png").default}
           alt="diamond_1"
         />
-         <img
+        <img
           className="diamond_1 diamond_1_copy d-sm-none"
           src={require("../../assets/img/diamond_1.png").default}
           alt="diamond_1"
@@ -33,8 +33,10 @@ function NoLogIn({ walletAddress }) {
           src={require("../../assets/img/steel_1.png").default}
           alt="steel_1"
         />
+
         <GameStats />
-        <div className="btn_control_top btn_control d-sm-none">
+
+        {/* <div className="btn_control_top btn_control d-sm-none">
           <Link to="/roadmap" className="btn_roadmap">
             CONNECT WALLET
           </Link>
@@ -44,7 +46,7 @@ function NoLogIn({ walletAddress }) {
           <Link to="/roadmap" className="btn_roadmap">
             ROADMAP
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   );
