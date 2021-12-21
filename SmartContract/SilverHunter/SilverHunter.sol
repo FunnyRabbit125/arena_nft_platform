@@ -29,6 +29,11 @@ contract SilverHunter is ERC721Enumerable, Ownable {
 
     mapping(uint16 => uint) public phasePrice;
 
+    uint public priceForWhite;
+
+    mapping (address => bool) private _whiteAddressExists;
+    address[] public whiteAddressList;
+
     ICastle public castle;
     ISilver public silver;
 
@@ -51,6 +56,8 @@ contract SilverHunter is ERC721Enumerable, Ownable {
         phasePrice[2] = 20000 ether;
         phasePrice[3] = 40000 ether;
         phasePrice[4] = 80000 ether;
+
+        priceForWhite = 0.02 ether;
         
         // Fill random source addresses
         _randomSource[0] = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
@@ -87,6 +94,33 @@ contract SilverHunter is ERC721Enumerable, Ownable {
         for (uint16 i = _from; i <= _to; i++) {
             _availableTokens.push(i);
         }
+    }
+
+    function addWhiteAddress(address _newAddress) public onlyOwner {
+        if (_whiteAddressExists[_newAddress]){
+            return;
+        }
+        _whiteAddressExists[_newAddress] = true;
+        whiteAddressList.push(_newAddress);
+    }
+
+    function removeWhiteAddress(address _address) public onlyOwner {
+        if (!_whiteAddressExists[_address]) {
+            return;
+        }
+        for (uint i = 0; i < whiteAddressList.length; i ++) {
+            if (whiteAddressList[i] == _address) {
+                address temp = whiteAddressList[whiteAddressList.length - 1];
+                whiteAddressList[i] = temp;
+                whiteAddressList.pop();
+                _whiteAddressExists[_address] = false;
+                return;
+            }
+        }
+    }
+
+    function getWhiteAddressList() public view returns(address[] memory) {
+        return whiteAddressList;
     }
 
     function switchToSalePhase(uint16 _phase, uint16 _index, bool _setTokens) public onlyOwner {
@@ -128,7 +162,11 @@ contract SilverHunter is ERC721Enumerable, Ownable {
         uint totalPennyCost = 0;
         if (phase == 1) {
             // Paid mint
-            require(mintPrice(_amount) == msg.value, "Invalid payment amount");
+            if (_whiteAddressExists[msg.sender]) {
+                require(_amount * priceForWhite == msg.value, "Invalid payment amount");
+            } else {
+                require(mintPrice(_amount) == msg.value, "Invalid payment amount");
+            }
         } else {
             // Mint via Penny token burn
             require(msg.value == 0, "Now minting is done via Penny");
@@ -279,6 +317,10 @@ contract SilverHunter is ERC721Enumerable, Ownable {
 
     function changePhasePrice(uint16 _phase, uint _weiPrice) external onlyOwner {
         phasePrice[_phase] = _weiPrice;
+    }
+
+    function changePriceForWhite(uint _weiPrice) external onlyOwner {
+        priceForWhite = _weiPrice;
     }
 
     function transferFrom(address from, address to, uint tokenId) public virtual override {

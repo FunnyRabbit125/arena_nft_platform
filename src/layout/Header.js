@@ -26,7 +26,7 @@ function Header({ setWallet }) {
       });
 
       window.ethereum.on("chainChanged", (_chainId) => {
-        if (_chainId != 3) {
+        if (_chainId != 56) {
           setWallet("");
         }
       });
@@ -42,7 +42,7 @@ function Header({ setWallet }) {
           method: "eth_chainId"
         });
 
-        if (chainId != 3) {
+        if (chainId != 56) {
           return {
             address: ""
           }
@@ -78,8 +78,8 @@ function Header({ setWallet }) {
         method: "eth_chainId"
       });
 
-      if (chainId != 3) {
-        alert("Please switch to Ropsten test network!");
+      if (chainId != 56) {
+        alert("Please switch to BSC network!");
         return {
           address: ""
         }

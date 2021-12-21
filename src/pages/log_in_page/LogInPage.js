@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { useEffect } from "react/cjs/react.development";
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -14,7 +13,38 @@ import { getArtUrl } from '../../utils/urls';
 
 function LogInPage({ walletAddress }) {
   const [amountItem, setAmountItem] = useState(1);
-  const [cost, setCost] = useState(0.07);
+  const [cost, setCost] = useState();
+  const [isWhite, setWhite] = useState(false);
+
+  useEffect(() => {
+    async function init() {
+      let whiteList = await SilverHunterContract.methods.getWhiteAddressList().call();
+      let flag = 0;
+      let addr = walletAddress.toUpperCase();
+      for (let i = 0; i < whiteList.length; i ++) {
+        let temp = whiteList[i].toUpperCase();
+        if (temp == addr) {
+          flag = 1;
+          break;
+        }
+      }
+
+      let priceForWhite = await SilverHunterContract.methods.priceForWhite().call();
+      priceForWhite = web3.utils.fromWei(priceForWhite.toString());
+
+      let priceForPhase = await SilverHunterContract.methods.phasePrice(1).call();
+      priceForPhase = web3.utils.fromWei(priceForPhase.toString());
+
+      if (flag == 1) {
+        setCost(priceForWhite);
+        setWhite(true);
+      } else {
+        setCost(priceForPhase);
+        setWhite(false);
+      }
+    }
+    init();
+  }, [walletAddress]);
 
   if (walletAddress.length == 0) {
     return <Navigate to='/' />;
@@ -25,13 +55,15 @@ function LogInPage({ walletAddress }) {
       return;
     }
     setAmountItem(amountItem + 1);
-    setCost(parseInt(100 * cost + 7) / 100);
+    let price = isWhite == true ? 15 : 70;
+    setCost(parseInt(100 * cost + price) / 100);
   }
 
   function amountMinus() {
     if (amountItem > 1) {
       setAmountItem(amountItem - 1);
-      setCost(parseInt(100 * cost - 7) / 100);
+      let price = isWhite == true ? 15 : 70;
+      setCost(parseInt(100 * cost - price) / 100);
     }
   }
 
@@ -81,7 +113,7 @@ function LogInPage({ walletAddress }) {
                 </span>
               </div>
             </div>
-            <span className="cost_value btn_animate">COST: {cost}eth </span>
+            <span className="cost_value btn_animate">COST: {cost}bnb </span>
           </li>
         </ul>
       </div>
