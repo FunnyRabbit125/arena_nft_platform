@@ -1,24 +1,37 @@
 import React from "react";
+// Import bootstrap
+import { Container,Row,Col } from 'react-bootstrap';
 
 function WhitePaper2(props) {
   return (
     <section id="WhitePaper2">
-      <h1>Whitepaper</h1>
-      <h2>Game Details</h2>
-      <div id="about_game_details">
+      <h1>WHITEPAPER</h1>
+      <Container>
+        <Row className="mb-5">
+        <Col md={4}>
+        <div className="content_item_1">
         <img
-          src={require("../../assets/img/social_art_game.png").default}
+          src={require("../../assets/img/whitepaper1.png").default}
           alt="img"
+          className="img-responsive center-block d-block mx-auto"
         />
+          </div>
+        </Col>
+        <Col md={6}>
+        <h2 className="mb-5">About The Game</h2>
         <p>
           Arena Royale is a game in which players stake their warriors to earn
           SILVER which can be used for multiple functionalities. Along with such
           players can use their warriors to fight in the arena and earn more
           silver.
         </p>
-      </div>
-      <h2>SILVER Token</h2>
-      <div id="silver_token">
+        </Col>
+        </Row>
+
+        <Row className="mb-5">
+        <Col md={6}>
+        <div className="content_item_1">
+        <h2 className="mb-5">SILVER Token</h2>
         <p>
           $Silver supply is 5,000,000,000:
           <br />
@@ -32,25 +45,42 @@ function WhitePaper2(props) {
           <br />
           Community Rewards will be allocated 2,000,000,000 $silver.
         </p>
+          </div>
+        </Col>
+        <Col md={4}>
         <img
-          src={require("../../assets/img/social_art2.png").default}
+          src={require("../../assets/img/whitepaper1.png").default}
           alt="img"
+          className="img-responsive center-block d-block mx-auto"
+
         />
-      </div>
-      <h2>Warrior Atributes</h2>
-      <div id="warrior_attributes">
+        
+        </Col>
+        </Row>
+
+        <Row className="mb-5">
+        <Col md={4}>
+       
         <img
-          src={require("../../assets/img/social_art3.png").default}
+          src={require("../../assets/img/whitepaper1.png").default}
           alt="img"
+          className="img-responsive center-block d-block mx-auto"
+
         />
-        <p>
-          Each warrior is minted with a set of armor and attack weapons that
+       
+        </Col>
+        <Col md={6}>
+        <div className="content_item_1">
+        <h2 className="mb-5">Warrior Atributes</h2>
+        <p>Each warrior is minted with a set of armor and attack weapons that
           come of different rarity. Each type and rarity is allocated a special
           ranking and thus decides the power of your warrior. These elements
-          will effect the battle ability of your NFT in the ARENA.
-        </p>
-      </div>
-      <div id="rarity_ranking_wrapper">
+          will effect the battle ability of your NFT in the ARENA.</p>
+          </div>
+        
+        </Col>
+        </Row>
+        <div id="rarity_ranking_wrapper">
         <h2 className="title">RARITY RANKING</h2>
         <ul>
           <li>
@@ -71,7 +101,7 @@ function WhitePaper2(props) {
         </ul>
       </div>
       <div className="knights_wrapper">
-        <h2>KNIGHTS</h2>
+        <br></br>
         <div id="knights">
           <img
             src={require("../../assets/img/diamond_65.png").default}
@@ -126,7 +156,7 @@ function WhitePaper2(props) {
       </div>
 
       <div className="weapons_wrapper">
-        <h3>Weapons</h3>
+        <h3 className="mt-5">Weapons</h3>
         <div id="weapons">
           <table>
             <thead>
@@ -206,7 +236,7 @@ function WhitePaper2(props) {
       </div>
 
       <div className="weapons_wrapper armor_wrapper">
-        <h3>Armor</h3>
+        <h3 className="mt-5">Armor</h3>
         <div id="weapons" className="armor_wrapper_table">
           <table>
             <thead>
@@ -322,7 +352,6 @@ function WhitePaper2(props) {
       </div>
 
       <div className="knights_wrapper">
-        <h2>VIKINGS</h2>
         <div id="knights">
           <img
             src={require("../../assets/img/VIKINGS.png").default}
@@ -460,7 +489,7 @@ function WhitePaper2(props) {
       </div>
 
       <div className="weapons_wrapper armor_wrapper">
-        <h3>Armor</h3>
+        <h3 className="mt-5">Armor</h3>
         <div id="weapons" className="armor_wrapper_table">
           <table>
             <thead>
@@ -574,6 +603,16 @@ function WhitePaper2(props) {
           </table>
         </div>
       </div>
+        </Container>
+
+
+
+
+
+
+
+     
+     
       <br /><br /><br /><br /><br />
     </section>
   );

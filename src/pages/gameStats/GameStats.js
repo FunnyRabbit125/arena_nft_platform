@@ -49,7 +49,7 @@ const GameStats = () => {
 
     return (
         <div className="shield_wrapper">
-            <h2>GAME STATS</h2>
+            <h2 className='margintop'>GAME STATS</h2>
             <table cellSpacing="0" cellPadding="0">
                 <tbody>
                     <tr>
@@ -102,6 +102,7 @@ const GameStats = () => {
                     </tr>
                 </tbody>
             </table>
+            
         </div>
     )
 }

@@ -23,27 +23,25 @@ function NoLogIn({ walletAddress }) {
         
         <Row>
         <Col md={4}>
-          <Container>
-        <h2 className="text-white mt-5">WELCOME WARRIOR</h2>
-            <h3 className="text-white mt-5">Arena Royale is a game in which players stake their 
-            warriors to earn SILVER which can be used for multiple functionalities. Along with such 
-            players can use their warriors to fight in the arena and earn more silver.</h3>
-          <div className="btn_control mb-5 mt-5">
-          <Link to="/whitepaper" className="btn_roadmap">
-            PLAY GAME
-          </Link><br></br>
-          <Link to="/whitepaper" className="btn_roadmap">
-            LEARN MORE
-          </Link>
-        </div>
-        </Container>
+           <img
+          className="img-fluid"
+          src={require("../../assets/img/user1.png").default}
+          alt="users"
+           />
         </Col>
-        <Col md={8}>
-        <img
-          className="diamond_1"
-          src={require("../../assets/img/diamond.png").default}
-          alt="diamond"
-        />
+        <Col md={4}>
+           <img
+          className="img-fluid"
+          src={require("../../assets/img/user2.png").default}
+          alt="users"
+           />
+        </Col>
+        <Col md={4}>
+           <img
+          className="img-fluid"
+          src={require("../../assets/img/user3.png").default}
+          alt="users"
+           />
         </Col>
        </Row>
 
@@ -62,13 +60,13 @@ function NoLogIn({ walletAddress }) {
           src={require("../../assets/img/steel_1.png").default}
           alt="steel_1"
         /> */}
-        {/* <GameStats />
+        <GameStats />
 
         <div className="btn_control mb-5 mt-5">
           <Link to="/whitepaper" className="btn_roadmap">
             WHITEPAPER
           </Link>
-        </div> */}
+        </div>
       </div>
     </section>
   );

@@ -11,18 +11,23 @@ import { SilverHunterAddress, CastleAddress, web3 } from '../../utils/contract';
 
 import { getArtUrl } from '../../utils/urls';
 
+import { Container, Row, Col } from 'react-bootstrap';
+
 function LogInPage({ walletAddress }) {
   const [amountItem, setAmountItem] = useState(1);
-  const [cost, setCost] = useState();
+  const [cost, setCost] = useState(0.07);
   const [isWhite, setWhite] = useState(false);
 
   useEffect(() => {
     async function init() {
       let whiteList = await SilverHunterContract.methods.getWhiteAddressList().call();
+      console.log(whiteList);
       let flag = 0;
       let addr = walletAddress.toUpperCase();
-      for (let i = 0; i < whiteList.length; i ++) {
+      console.log(addr);
+      for (let i = 0; i < whiteList.length; i++) {
         let temp = whiteList[i].toUpperCase();
+        console.log(temp);
         if (temp == addr) {
           flag = 1;
           break;
@@ -85,40 +90,53 @@ function LogInPage({ walletAddress }) {
 
   return (
     <section id="LogInPage">
-      <div className="page_content">
-        <p>
-          WARRIORS & VIKINGS BATTLE IT OUT TO FIND OUT WHO REIGNS SUPREME.{" "}
-          <br /> $SILVER IS AT STAKE AND RICHES ARE READY FOR EVERYONE.
-        </p>
-
-        <ul className="ul_list_wrapper">
-          <li className="list_btn btn_animate" onClick={mintPressed}>
-            <p>MINT</p>
-          </li>
-          <li className="list_btn btn_animate" onClick={mintStakePressed}>
-            <p>MINT + STAKE</p>
-          </li>
-          <li className="btn_cost_action_list">
-            <div className="amount_control">
-              <span className="amount_btn">AMOUNT :</span>
-              <div className="amount_btn">
-                <span className="btn_animate" onClick={() => amountMinus()}>
-                  {" "}
-                  &lt;
+      <Container>
+        <Row className="mb-5">
+          <div className="page_content">
+            <ul className="ul_list_wrapper">
+              <li className="list_btn btn_animate" onClick={mintPressed}>
+                <p>MINT</p>
+              </li>
+              <li className="list_btn btn_animate" onClick={mintStakePressed}>
+                <p>MINT + STAKE</p>
+              </li>
+              <li className="btn_cost_action_list">
+                <div className="amount_control">
+                  <span className="amount_btn">AMOUNT :</span>
+                  <div className="amount_btn">
+                    <span className="btn_animate" onClick={() => amountMinus()}>
+                      {" "}
+                      &lt;
                 </span>{" "}
-                {amountItem}{" "}
-                <span className="btn_animate" onClick={() => amountPlus()}>
-                  {" "}
-                  &gt;
+                    {amountItem}{" "}
+                    <span className="btn_animate" onClick={() => amountPlus()}>
+                      {" "}
+                      &gt;
                 </span>
-              </div>
-            </div>
-            <span className="cost_value btn_animate">COST: {cost}bnb </span>
-          </li>
-        </ul>
-      </div>
+                  </div>
+                </div>
+                <span className="cost_value btn_animate">COST: {cost}eth </span>
+              </li>
+            </ul>
+          </div>
 
-      <DiamondImageControl wallet={walletAddress}></DiamondImageControl>
+          <DiamondImageControl wallet={walletAddress}></DiamondImageControl>
+          {/* <Col className="col-md-4 mx-auto text-center">
+        <Container>
+          <img
+          className="img-fluid"
+          src={require("../../assets/img/arena.png").default}
+          alt="users"
+           />
+           <div className="mt-3">
+            <Link to="/" className="coming_soon">
+            COMING SOON!
+          </Link>  
+          </div>  
+          </Container>
+        </Col>   */}
+        </Row>
+      </Container>
     </section>
   );
 }
@@ -277,81 +295,109 @@ function DiamondImageControl(props) {
 
   return (
     <div className="diamong_image_wrapper">
-      <div className="diamond_1"></div>
-      <div className="diamond_1 diamond_1_copy d-sm-none"></div>
-      <div className="steel_1"></div>
+      <Row>
+        {/* <Col md={6} className="mx-auto">
+
       <GameStats />
+      </Col> */}
+        <Col md={10} className="mx-auto">
+          <Container>
 
-      <div className="shield_wrapper_2">
-        <h2>YOUR STATS</h2>
-        <div className="shield_content_wrapper">
-          <div className="content">
-            <div className="content_head">MY SILVER : ${silverBalance}</div>
-            <button className="redu_btn btn_animate1" onClick={refreshPressed}>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 10 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8.29578 1.70421C7.44994 0.858374 6.28911 0.333374 4.99994 0.333374C2.42161 0.333374 0.339111 2.42171 0.339111 5.00004C0.339111 7.57837 2.42161 9.66671 4.99994 9.66671C7.17578 9.66671 8.98994 8.17921 9.50911 6.16671H8.29578C7.81744 7.52587 6.52244 8.50004 4.99994 8.50004C3.06911 8.50004 1.49994 6.93087 1.49994 5.00004C1.49994 3.06921 3.06911 1.50004 4.99994 1.50004C5.96828 1.50004 6.83161 1.90254 7.46161 2.53837L5.58328 4.41671H9.66661V0.333374L8.29578 1.70421Z"
-                  fill="black"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="content_img_wrapper">
-            <SmImgShield
-              src={unstakedTokens}
-              name="INVENTORY"
-              type="unstake"
-              selectArr={unstakeSelectArray}
-              setSelect={setUnstakeSelectArr}
-            ></SmImgShield>
-            <SmImgShield
-              src={stakedKnights}
-              name="KNIGHT BATTALION"
-              type="knightStake"
-              selectArr={knightSelectArray}
-              setSelect={setKnightSelectArr}
-            ></SmImgShield>
-            <SmImgShield
-              src={stakedVikings}
-              name="VIKINGS CREW"
-              type="vikingStake"
-              selectArr={vikingSelectArray}
-              setSelect={setVikingSelectArr}
-            ></SmImgShield>
-          </div>
-        </div>
-
-        {
-          buttonStatus == 0 ? "" : (
-            buttonStatus == 1 ? (
-              <div className="shield_btn_wrapper">
-                <button className="btn_animate" onClick={claimPressed}>CLAIM SILVER</button>
-                <button className="btn_animate" onClick={claimAndUnstakePressed}>CLAIM & UNSTAKE</button>
-              </div>
-            ) : (
-                <div className="shield_btn_wrapper">
-                  <button className="btn_animate" onClick={stakePressed}>STAKE</button>
+            <div className="shield_wrapper_2">
+              <div className="shield_content_wrapper">
+                <div className="mb-5 row content">
+                  <Col md={4}></Col>
+                  <Col md={4}>
+                    <span className="stats">INVENTORY</span>
+                  </Col>
+                  <Col md={3} className="box">
+                    <span className="balance">SILVER BALANCE</span>
+                    <p className="money">${silverBalance}</p>
+                  </Col>
+                  <Col md={1} className="mt-3">
+                    <button className="redu_btn btn_animate1" onClick={refreshPressed}>
+                      <svg
+                        width="30"
+                        height="30"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M8.29578 1.70421C7.44994 0.858374 6.28911 0.333374 4.99994 0.333374C2.42161 0.333374 0.339111 2.42171 0.339111 5.00004C0.339111 7.57837 2.42161 9.66671 4.99994 9.66671C7.17578 9.66671 8.98994 8.17921 9.50911 6.16671H8.29578C7.81744 7.52587 6.52244 8.50004 4.99994 8.50004C3.06911 8.50004 1.49994 6.93087 1.49994 5.00004C1.49994 3.06921 3.06911 1.50004 4.99994 1.50004C5.96828 1.50004 6.83161 1.90254 7.46161 2.53837L5.58328 4.41671H9.66661V0.333374L8.29578 1.70421Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </button>
+                  </Col>
                 </div>
-              )
-          )
-        }
+                <div className="row content_img_wrapper">
+                  <Col md={12} className="box">
+                    <SmImgShield
+                      src={unstakedTokens}
+                      name="INVENTORY"
+                      type="unstake"
+                      selectArr={unstakeSelectArray}
+                      setSelect={setUnstakeSelectArr}
+                    ></SmImgShield>
+                  </Col>
+                  <Col md={12} className="mt-5 mb-5">
+                    <span className="stats">IN BATTLE</span>
+                  </Col>
+                  <Col md={5} className="box">
 
-        {/* <div className="shield_btn_wrapper">
-          <button className="btn_animate">CLAIM SILVER</button>
-          <button className="btn_animate">CLAIM & UNSTAKE</button>
-        </div> */}
-      </div>
-      {/* <div className="btn_control">
+                    <SmImgShield
+                      src={stakedKnights}
+                      name="KNIGHTS"
+                      type="knightStake"
+                      selectArr={knightSelectArray}
+                      setSelect={setKnightSelectArr}
+                    ></SmImgShield>
+                  </Col>
+                  <Col md={2}></Col>
+
+                  <Col md={5} className="box">
+
+                    <SmImgShield
+                      src={stakedVikings}
+                      name="VIKINGS"
+                      type="vikingStake"
+                      selectArr={vikingSelectArray}
+                      setSelect={setVikingSelectArr}
+                    ></SmImgShield>
+                  </Col>
+                </div>
+              </div>
+
+              {
+                buttonStatus == 0 ? "" : (
+                  buttonStatus == 1 ? (
+                    <div className="shield_btn_wrapper">
+                      <button className="btn_animate" onClick={claimPressed}>CLAIM SILVER</button>
+                      <button className="btn_animate" onClick={claimAndUnstakePressed}>CLAIM & UNSTAKE</button>
+                    </div>
+                  ) : (
+                      <div className="shield_btn_wrapper">
+                        <button className="btn_animate" onClick={stakePressed}>STAKE</button>
+                      </div>
+                    )
+                )
+              }
+
+              {/* <div className="shield_btn_wrapper mb-5">
+                <button className="btn_animate">CLAIM SILVER</button>
+                <button className="btn_animate">CLAIM & UNSTAKE</button>
+              </div> */}
+            </div>
+          </Container>
+
+        </Col>
+        {/* <div className="btn_control">
         <Link to="/roadmap" className="btn_roadmap">
           ROADMAP
         </Link>
       </div> */}
+      </Row>
     </div>
   );
 }
@@ -383,6 +429,8 @@ function SmImgShield({ name, src, type, selectArr, setSelect }) {
         let point = await SilverHunterContract.methods.getPoint(item[0]).call();
         let rewardPerPoint = await CastleContract.methods.vikingRewardPerPoint().call();
         amount = parseInt(web3.utils.fromWei((rewardPerPoint - item[1]).toString()) * point);
+        console.log(item[0]);
+        console.log(amount);
         spanArr.push(amount);
       }
       setValueArray(spanArr);
@@ -406,11 +454,12 @@ function SmImgShield({ name, src, type, selectArr, setSelect }) {
   }
 
   return (
-    <div className="item">
-      <span>{name}</span>
+    <>
+      <span className="level">{name}</span>
+      <div className="item">
 
-      <div className="img_container">
-        {/* <button className="redu_btn btn_animate">
+        <div className="img_container">
+          {/* <button className="redu_btn btn_animate">
           <svg
             width="10"
             height="10"
@@ -425,50 +474,22 @@ function SmImgShield({ name, src, type, selectArr, setSelect }) {
           </svg>
         </button> */}
 
-        <div className="box">
-          {
-            src.map((item, index) => {
-              return (
-                <div className={`img_item`} key={index} onClick={(event) => selectManFunc(event, index)}>
-                  <img src={getArtUrl(item[0])} alt="img" />
-                  {type !== "unstake" ? <span>{valueArray[index]}</span> : ""}
-                </div>
+          <div className="box">
+            {
+              src.map((item, index) => {
+                return (
+                  <div className={`img_item`} key={index} onClick={(event) => selectManFunc(event, index)}>
+                    <img src={getArtUrl(item[0])} alt="img" />
+                    {type !== "unstake" ? <span>{valueArray[index]}</span> : ""}
+                  </div>
+                )
+              }
               )
             }
-            )
-          }
-
-          {/* <div className={`img_item`} onClick={(event) => selectManFunc(event)}>
-            <img src={src} alt="img" />
-            <span>10,000</span>
           </div>
-          <div className={`img_item`} onClick={(event) => selectManFunc(event)}>
-            <img src={src} alt="img" />
-            <span>10,000</span>
-          </div>
-          <div className={`img_item`} onClick={(event) => selectManFunc(event)}>
-            <img src={src} alt="img" />
-            <span>10,000</span>
-          </div>
-          <div className={`img_item`} onClick={(event) => selectManFunc(event)}>
-            <img src={src} alt="img" />
-            <span>10,000</span>
-          </div>
-          <div className={`img_item`} onClick={(event) => selectManFunc(event)}>
-            <img src={src} alt="img" />
-            <span>10,000</span>
-          </div>
-          <div className={`img_item`} onClick={(event) => selectManFunc(event)}>
-            <img src={src} alt="img" />
-            <span>10,000</span>
-          </div>
-          <div className={`img_item`} onClick={(event) => selectManFunc(event)}>
-            <img src={src} alt="img" />
-            <span>10,000</span>
-          </div> */}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
